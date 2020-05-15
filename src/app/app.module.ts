@@ -18,7 +18,7 @@ import { ReactiveComponent } from './pages/reactive/reactive.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],
