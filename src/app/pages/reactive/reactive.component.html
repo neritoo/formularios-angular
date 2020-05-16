@@ -2,26 +2,22 @@
 <hr>
 <form autocomplete="off" [formGroup]="form" (ngSubmit)="guardar()">
 
-    <div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Nombre</label>
+        <div class="col-8">
 
-        <div class="form-group row">
-            <label class="col-2 col-form-label">Nombre</label>
-            <div class="col-8">
-
-                <input autocomplete="none" class="form-control" type="text" placeholder="Nombre" formControlName="nombre" [class.is-invalid]="nombreNoValido">
-                <small class="text-danger" *ngIf="nombreNoValido">Ingrese mínimo 4 caractéres.</small>
-            </div>
+            <input autocomplete="none" class="form-control" type="text" placeholder="Nombre" formControlName="nombre" [class.is-invalid]="nombreNoValido">
+            <small class="text-danger" *ngIf="nombreNoValido">Ingrese mínimo 4 caractéres.</small>
         </div>
+    </div>
 
-        <div class="form-group row">
-            <label class="col-2 col-form-label">Apellido</label>
-            <div class="col-8">
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Apellido</label>
+        <div class="col-8">
 
-                <input autocomplete="none" class="form-control" type="text" placeholder="Apellido" formControlName="apellido" [class.is-invalid]="apellidoNoValido">
-                <small class="text-danger" *ngIf="apellidoNoValido">Ingrese mínimo 4 caractéres.</small>
-            </div>
+            <input autocomplete="none" class="form-control" type="text" placeholder="Apellido" formControlName="apellido" [class.is-invalid]="apellidoNoValido">
+            <small class="text-danger" *ngIf="apellidoNoValido">Ingrese mínimo 4 caractéres.</small>
         </div>
-
     </div>
 
     <div class="form-group row">
@@ -30,6 +26,31 @@
 
             <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="email" [class.is-invalid]="emailNoValido">
             <small class="text-danger" *ngIf="emailNoValido">Email obligatorio.</small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Usuario</label>
+        <div class="col-8">
+
+            <input class="form-control" type="email" placeholder="Nombre de usuario" formControlName="usuario" [class.is-invalid]="usuarioNoValido">
+            <small class="text-danger" *ngIf="usuarioNoValido">Nombre ya usado.</small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Contraseña</label>
+        <div class="col-8">
+            <input class="form-control" type="password" placeholder="Contraseña" formControlName="pass1" [ngClass]="{'is-invalid' : pass1NoValido}">
+            <small class="text-danger" *ngIf="pass1NoValido">Ingrese la contraseña.</small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Verificar</label>
+        <div class="col-8">
+            <input class="form-control" type="password" placeholder="Repita la contraseña" formControlName="pass2" [class.is-invalid]="pass2NoValido">
+            <small class="text-danger" *ngIf="pass2NoValido">Las contraseñas no coinciden.</small>
         </div>
     </div>
 
@@ -76,7 +97,7 @@
     <div class="form-group row">
         <label class="col-2 col-form-label">&nbsp;</label>
         <div class="input-group col-8">
-            <button type="submit" class="btn btn-outline-primary btn-block">
+            <button type="submit" [disabled]="form.pending" class="btn btn-outline-primary btn-block">
         Guardar
       </button>
         </div>

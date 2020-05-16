@@ -10,21 +10,12 @@ import { ValidadoresService } from 'src/app/services/validadores.service';
 export class ReactiveComponent implements OnInit {
 
   form: FormGroup;
-  usuario = {
-    nombre: 'Ezequiel',
-    apellido: 'Gavilan',
-    email: 'ezegavilan95@gmail.com',
-    direccion: {
-      localidad: 'Cordoba',
-      ciudad: 'Cordoba'
-    },
-    pasatiempos: ['Comer', 'Dormir']
-  }
-  
+
   constructor(private fb: FormBuilder,
               private validadores: ValidadoresService) {
       this.crearFormulario();
       this.cargarDatos();
+      this.crearListeners();
     }
     
     ngOnInit() {
@@ -45,6 +36,10 @@ export class ReactiveComponent implements OnInit {
     get emailNoValido() {
       return this.form.get('email').invalid && this.form.get('email').touched;
     }
+
+    get usuarioNoValido() {
+      return this.form.get('usuario').invalid && this.form.get('usuario').touched;
+    }
     
     get localidadNoValido() {
       return this.form.get('direccion.localidad').invalid && this.form.get('direccion.localidad').touched;
@@ -53,23 +48,56 @@ export class ReactiveComponent implements OnInit {
     get ciudadNoValido() {
       return this.form.get('direccion.ciudad').invalid && this.form.get('direccion.ciudad').touched;
     }
+
+    get pass1NoValido() {
+      return this.form.get('pass1').invalid && this.form.get('pass1').touched;
+    }
+
+    get pass2NoValido() {
+      const pass1 = this.form.get('pass1').value;
+      const pass2 = this.form.get('pass2').value;
+
+      return ( pass1 === pass2 ) ? false : true;
+    }
     
     crearFormulario() {
     this.form = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(4)]],
       apellido: ['', [Validators.required, Validators.minLength(4), this.validadores.noGavilan]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      usuario: ['', , this.validadores.existeUsuario],
+      pass1: ['', Validators.required],
+      pass2: ['', Validators.required],
       direccion: this.fb.group({
         localidad: ['', Validators.required],
         ciudad: ['', Validators.required]
       }),
       pasatiempos: this.fb.array([])
-    });
+    }, {
+      validators: this.validadores.passwordsIguales('pass1', 'pass2')
+    }
+    );
+  }
+  
+  crearListeners() {
+    this.form.get('nombre').valueChanges.subscribe( console.log );
   }
 
   cargarDatos() {
-    this.usuario.pasatiempos.forEach(pasatiempo => this.pasatiempos.push(this.fb.control(pasatiempo)));
-    this.form.setValue(this.usuario);
+    ['Comer', 'Dormir'].forEach(pasatiempo => this.pasatiempos.push(this.fb.control(pasatiempo)));
+    this.form.setValue({
+      nombre: 'Ezequiel',
+      apellido: 'Gavilan',
+      email: 'ezegavilan95@gmail.com',
+      usuario: '',
+      pass1: '123',
+      pass2: '123',
+      direccion: {
+        localidad: 'Cordoba',
+        ciudad: 'Cordoba'
+      },
+      pasatiempos: ['Comer', 'Dormir']
+    });
   }
 
   
